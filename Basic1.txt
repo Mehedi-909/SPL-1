@@ -1,0 +1,7 @@
+Program slicing is a technique for simplifying programs by focusing on selected aspects of semantics.
+The process of slicing deletes those parts of the program which can be determined to have no effect
+upon the semantics of interest. Slicing has applications in testing and debugging, re-engineering,
+program comprehension and software measurement. For example, in debugging, there is little point in
+the (human) debugger analysing sections of the source code which cannot have caused the bug.
+Slicing avoids this by removing these parts of the program, focusing attention on those parts of the
+program which may contain a fault.
