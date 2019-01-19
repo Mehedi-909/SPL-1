@@ -1,0 +1,12 @@
+Classification:
+There are three semantic paradigms for slicing: static, dynamic and conditioned and two
+syntactic paradigms: syntax-preserving and amorphous.
+
+There are two dimensions to slicing: a syntactic dimension and a semantic dimension. The semantic
+dimension describes that which is to be preserved.
+
+In the syntactic dimension there is comparatively less choice. There are two possibilities. Firstly, the
+slice can preserve the program’s original syntax wherever possible, merely removing parts of the
+program which can be found to have no effect on the semantics of interest. This is known as a syntaxobserving
+slice. Secondly, the slice can be free to perform any syntactic transformation which
+preserves the semantic constraints desired. This is known as amorphous slicing
