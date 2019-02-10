@@ -10,3 +10,5 @@ slice can preserve the program’s original syntax wherever possible, merely remov
 program which can be found to have no effect on the semantics of interest. This is known as a syntaxobserving
 slice. Secondly, the slice can be free to perform any syntactic transformation which
 preserves the semantic constraints desired. This is known as amorphous slicing
+
+Working on it
