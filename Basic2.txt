@@ -12,3 +12,4 @@ slice. Secondly, the slice can be free to perform any syntactic transformation w
 preserves the semantic constraints desired. This is known as amorphous slicing
 
 Working on it
+new
