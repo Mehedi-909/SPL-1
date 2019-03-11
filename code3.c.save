@@ -1,0 +1,24 @@
+#include<stdio.h>
+
+
+void Static_Slice(p,ch)
+{
+int l;
+str s1=‖ ‖;
+ Open program P in read mode
+ Fetch the input variable Ch
+ Find l i.e. length of program P
+ while(!EOF)
+{
+ for(i=0;i<=l;i++)
+{
+ if(Ch==getc(p))
+ {
+ Delete the variable;
+ }
+ else
+ {
+ s1=s1+Ch;
+ }
+ }
+ }

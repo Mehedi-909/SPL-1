@@ -1,0 +1,3 @@
+this is fscanf
+this is fgets
+this is another.
