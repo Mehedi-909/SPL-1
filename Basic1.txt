@@ -6,6 +6,30 @@ the (human) debugger analysing sections of the source code which cannot have cau
 Slicing avoids this by removing these parts of the program, focusing attention on those parts of the
 program which may contain a fault.
 
+Motivation for our work
+Slicing is mainly used in different s/w engg. applications such as program comprehension &
+testing. So, the slicing techniques need to be efficient. This requires to develop
+• Efficient slicing algorithms
+• Suitable intermediate representations
+So, there is a pressing need to develop efficient slicing algorithms for programs.
+
+Program Slicing
+Program slicing was originally introduced by Mark Weiser.[3]
+• Finding all statements in a program that directly or indirectly affect the value
+of a variable occurrence is referred to as Program Slicing .
+
+Slicing Criterion
+• The pair <s,v> is known as Slicing Criterion where ‘s’ is a program point of
+interest and ‘v’ is a variable used or defined above.
+
+Types of program slicing
+Depending on the run-time environment, it can be
+• Static slicing
+• Dynamic slicing
+Depending on graph traversal, it can be
+• Backward slicing
+• Forward slicing
+
 Working on it
 new
 preparing task

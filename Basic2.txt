@@ -9,7 +9,32 @@ In the syntactic dimension there is comparatively less choice. There are two pos
 slice can preserve the program’s original syntax wherever possible, merely removing parts of the
 program which can be found to have no effect on the semantics of interest. This is known as a syntaxobserving
 slice. Secondly, the slice can be free to perform any syntactic transformation which
-preserves the semantic constraints desired. This is known as amorphous slicing
+preserves the semantic constraints desired. This is known as amorphous slicing.
+
+Static Slicing
+Static slicing may be used to identify these parts of the program that potentially contribute to
+the computation of the selected function for all possible programs inputs. Static slicing is
+helpful to gain a general understanding of these parts of the program that contribute to the
+computation to the selected function. Although static slicing has many advantages in the
+process of program understanding, static slices are frequently still large subprograms because
+of the imprecise computation of these slices. In addition, static slices cannot be used in the
+process of understanding of program execution. [5]
+
+Dynamic Slicing
+Dynamic slicing is used to identify these parts of the program that contribute to the
+computation of the selected function for a given program execution (program input).
+Dynamic slicing may help to narrow down this part of the program that contributes to the
+computation of the function of interest for particular program input. Dynamic slices are
+frequently much smaller than static slices. Moreover, dynamic slicing may be used to
+understand program execution. Programmers may still have difficulties to understand the
+program and its behavior. The slicing tools usually developed provide limited support during
+the process of understanding of large programs and their executions. Therefore, it is
+important to devise methods that will support the process of understanding of large software systems. One aid to understanding of large software systems is to use a intermediate
+representation of a program and then compute a slice from the graph. This slicing technique
+aims at giving a better understanding of large programs and their executions for a particular
+input. These concepts have been developed, static and dynamic program slicing which when
+combined with different methods of visualization of program slices is to guide programmers
+in the process of understanding of large programs and their executions.
 
 Working on it
 new
