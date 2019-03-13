@@ -19,39 +19,33 @@ FILE *fp;
                 i++;
             }
             int j=0;
-     for(j=0;s[j]!='\0';j++){
+        for(j=0;s[j]!='\0';j++){
             //printf("%c",s[j]);
         }
         //printf("\n");
 
 
-     return j;
+   return j;
 }
 
 int main(){
-
     char inputFile[15],outputFile[15];
     string variable;
     int line=0,variableCounter=0;
-
     printf("Enter input filename with extension: \n");
     scanf("%s",inputFile);
-
     printf("Enter output filename with .cpp extension: \n");
     scanf("%s",outputFile);
-
     printf("Enter variable name & line with a space: \n");
     cin>>variable;
     cin>>line;
-
     variableCounter++;
     fp=fopen(inputFile,"r");
-     if (fp == NULL){
-
+     if (fp == NULL)
+    {
         printf("File does not exist \n");
         return 0;
-     }
-
+    }
     else  printf("File opened succesfully. \n");
     int i=1;
 
@@ -74,36 +68,42 @@ int main(){
     rewind(fp);
 
     int j=1;
-    while(j<=count){
-
+   while(j<=count){
     int c=countCInLine(j);
     countChar[j]=c;
     //printf("%d characters in line %d \n",count[i],i);
     j++;
-
    }
 
     rewind(fp);
     int count2=0;
 
+    //char getLine2[totalByte-countToLine+100];
     while(fgets ( getLine,countToLine , fp ) ){
 
-        count2++;
+            count2++;
         if(count2==line-1) break;
 
     }
     printf("line read: %d \n",count2);
 
+    //int byteToEnteredLine=ftell(fp);
     //printf("Total byte : %d ",byteToEnteredLine);
+    //count2++;
 
     char getCharacter;
     int currentLine=line-1;
-    fseek( fp, countToLine, SEEK_SET );
+     fseek( fp, countToLine, SEEK_SET );
 
+    //char lineBuffer[20][100];
     char s[255];
     int itr=0;
+    //stack <string> dependent;
     string var[5];
     int varCount=0;
+
+
+    //store2 = new string[200];
 
     while(fgets ( getLine, sizeof getLine, fp )){
             string store1[200];
@@ -111,11 +111,9 @@ int main(){
         //cout<<getLine<<endl;
         stringstream ss1(getLine);
         int i=0;
-
         while(ss1>>store1[i]){
             i++;
         }
-
         int length = sizeof(store1)/sizeof(store1[0]);
         //cout<<"Length of store2: "<<length<<endl;
         for(i=0;i<length;i++){
@@ -153,20 +151,22 @@ int main(){
     }
 
     rewind(fp);
+    //delete(store2);
 
+    //store2 = new string[200];
     while(fgets ( getLine, sizeof getLine, fp )){
-
-        string store2[200];
+            string store2[200];
         //cout<<"OK1"<<endl;
+       // cout<<"This line is culprit : "<<getLine<<endl;
         stringstream ss1(getLine);
         int i=0;
         while(ss1>>store2[i]){
 
+            //cout<<"Hi "<<store2[i]<<"  i= "<<i<<endl;
             i++;
         }
-
         int length = sizeof(store2)/sizeof(store2[0]);
-
+        //cout<<"store2[1] : "<<store2[1]<<endl;
         for(i=0;i<length;i++){
                 //cout<<"OK2"<<endl;
 
@@ -176,12 +176,12 @@ int main(){
                 ss1>>store2[i];
 
                 for(int j=0;j<(sizeof(var)/sizeof(var[0]));j++){
-                    if( (store2[i].compare(var[j]))==0 ){
+                if( (store2[i].compare(var[j]))==0 ){
 
                         var[varCount]=store2[i-2];
                         //cout<<"Checking : "<<store2[i]<<"  "<<store2[i-1]<<" "<<store2[i-2]<<" "<<var[j]<<endl;
-                        cout<<"Stored variable : " << var[varCount]<<endl;
-                        varCount++;
+                    cout<<"Stored variable : " << var[varCount]<<endl;
+                    varCount++;
 
 
                 }
@@ -197,21 +197,18 @@ int main(){
                 i++;
                 ss1>>store2[i];
                  for(int j=0;j<sizeof(var)/sizeof(var[0]);j++){
-
-                 if( (store2[i].compare(var[j]))==0){
+                if( (store2[i].compare(var[j]))==0){
 
                         var[varCount]=store2[0];
-                        cout<<"Stored variable : " << var[varCount]<<endl;
-                        varCount++;
-                    }
-                 }
+                    cout<<"Stored variable : " << var[varCount]<<endl;
+                    varCount++;
             }
+                 }
         }
-
     }
 
+    }
     cout<<"Stored variables are : "<<endl;
-
     for(int k=0;k<5;k++){
         cout<<var[k]<<endl;
     }
@@ -230,12 +227,14 @@ int main(){
             }
      }
 
+
     //fseek( fp, countToLine, SEEK_SET );
     rewind(fp);
     int count3=0,countCurlyBrace=0;
 
-    char check2[100];
-    while(fgets ( getLine, sizeof getLine, fp )){
+     //char getLine2[100];
+    char check2[50];
+    while(fgets ( getLine, sizeof getLine, fp ) != NULL ){
             for(int n=0;n<50;n++){
                 check2[n]='\0';
             }
@@ -244,6 +243,18 @@ int main(){
             string check;
             //char check2[50];
         stringstream ss(getLine);
+
+        if(getLine[0]=='}'){
+            countCurlyBrace=0;
+            cout<<"countCurlyBrace = "<<countCurlyBrace<<endl;
+            fprintf(fp2,"%c %c",'\t','}');
+        }
+
+        if(countCurlyBrace==1){
+            fputs(getLine,fp2);
+
+        }
+
         int i=0;
          while (ss >> store3[i]){
                 if((store3[i].compare("main(){"))==0){
@@ -254,7 +265,7 @@ int main(){
            if((store3[i].compare(variable))==0 || (store3[i].compare(var[count3]))==0 || (store3[i].compare(var[count3+1]))==0 || (store3[i].compare(var[count3+2]))==0 || (store3[i].compare(var[count3+3]))==0){
 
                 check=getLine;
-                fgets ( check2,10, fp2 );
+                //fgets ( check2,50, fp2 );
                 //cout<<"Check : "<< check<<endl;
                 if((check.compare(check2))!=0){
                 for(int j=0;j<strlen(getLine);j++){
@@ -262,19 +273,28 @@ int main(){
                     fprintf(fp2,"%c",getLine[j]);
                     check2[j]=getLine[j];
                     if(getLine[j]=='{'){
-                        countCurlyBrace++;
+                        fprintf(fp2,"%c",'\n');
+                        countCurlyBrace=1;
+
+                       /* while(fgets(getLine2,sizeof getLine2,fp)!= "}"){
+
+                                fputs(getLine2,fp2);
+                        } */
+                        //fprintf(fp2,"%c %c",'\t','}');
+
                     }
                 }
                 }
 
+               //printf("\n");
             }
 
-            if((store3[i].compare("}"))==0 && countCurlyBrace>0){
+           /* if((store3[i].compare("}"))==0 && countCurlyBrace>0){
                 fprintf(fp2,"%c",'\n');
                 fprintf(fp2,"%c %c",'\t','}');
-                fprintf(fp2,"%c",'\n');
+            fprintf(fp2,"%c",'\n');
                 countCurlyBrace--;
-            }
+            } */
 
         i++;
 
@@ -282,9 +302,11 @@ int main(){
 
     }
 
-    fprintf(fp2,"%c%s %c \n",'\t',"return 0",';');
     fprintf(fp2,"%c",'}');
     fclose(fp2);
     fclose(fp);
 
 }
+
+
+

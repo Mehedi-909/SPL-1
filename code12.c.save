@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<string.h>
 int main(){
     int num1 , num2 , sum = 0 , i , j , total = 0;
     printf("Enter two numbers: \n");

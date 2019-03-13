@@ -104,40 +104,82 @@ int main(){
     string store2[200];
 
     while(fgets ( getLine, sizeof getLine, fp )){
-
+        //cout<<"OK1"<<endl;
+        //cout<<getLine<<endl;
         stringstream ss1(getLine);
-        string initial;
-        ss1>>initial;
         int i=0;
         while(ss1>>store2[i]){
-            if((store2[i].compare("="))==0){
+            i++;
+        }
+        int length = sizeof(store2)/sizeof(store2[0]);
+        //cout<<"Length of store2: "<<length<<endl;
+        for(i=0;i<length;i++){
+                //cout<<"OK2"<<endl;
+            if((store2[i].compare("="))==0 || (store2[i].compare("!="))==0 || (store2[i].compare("<="))==0 || (store2[i].compare(">="))==0 ){
+                //cout<<"OK3"<<endl;
                     i++;
                 ss1>>store2[i];
-                if( (store2[i].compare(variable))==0){
-                    var[varCount]=initial;
+                
+                if( (store2[i].compare(variable))==0 || (store2[i].compare(var[j]))==0 ){
+
+                        var[varCount]=store2[i-2];
                     cout<<"Stored variable : " << var[varCount]<<endl;
                     varCount++;
+
+
                 }
+                else i--;
+            
+            }
+
+            else if((store2[i].compare("+"))==0 || (store2[i].compare("-"))==0 || (store2[i].compare("*"))==0 || (store2[i].compare("/"))==0){
+
+                i++;
+                ss1>>store2[i];
+                if( (store2[i].compare(variable))==0){
+
+                        var[varCount]=store2[0];
+                    cout<<"Stored variable : " << var[varCount]<<endl;
+                    varCount++;
             }
         }
     }
-    
+
+    }
+
+    rewind(fp);
+    FILE *fp2=fopen("output.txt","w");
+    int r=0;
+     while(fscanf ( fp, "%c", getLine ) != EOF ){
+            //cout<<" testing : "<< getLine[0]<<endl;
+            if(getLine[0] == '#'){
+                fprintf(fp2,"%c",'#');
+                char remaining[50];
+                fgets(remaining, sizeof remaining, fp);
+                fputs(remaining,fp2);
+
+            }
+     }
+
+
      fseek( fp, countToLine, SEEK_SET );
     //fscanf(fp,"%s",s);
     //dependent.push(s);
     int count3=0;
     //var[count3]=s;
     //cout<<"New variable: "<<dependent.top()<<endl;
-    cout<<"New variable stored in string: "<<var[count3]<<endl;
+   // cout<<"New variable stored in string: "<<var[count3]<<endl;
     string store3[200];
+
 
     while(fgets ( getLine, sizeof getLine, fp )){
         stringstream ss(getLine);
         int i=0;
          while (ss >> store3[i]){
-           if((store3[i].compare(variable))==0 || (store3[i].compare(var[count3]))==0){
+           if((store3[i].compare(variable))==0 || (store3[i].compare(var[count3]))==0 || (store3[i].compare(var[count3+1]))==0 || (store3[i].compare(var[count3+2]))==0){
                 for(int j=0;j<strlen(getLine);j++){
                     printf("%c",getLine[j]);
+                    fprintf(fp2,"%c",getLine[j]);
                 }
                 //cout<<"Entering"<<endl;
                // cout<<"Found "<<store3[i]<<endl;
@@ -149,11 +191,14 @@ int main(){
     }
 
     }
+    fclose(fp2);
 
 
     fclose(fp);
 
 }
+
+
 
 
 
