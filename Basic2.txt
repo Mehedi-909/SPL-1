@@ -42,3 +42,5 @@ preparing task
 another
 
 On the verge of success.
+
+Need to slice methods.

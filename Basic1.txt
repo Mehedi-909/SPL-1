@@ -22,6 +22,8 @@ Slicing Criterion
 • The pair <s,v> is known as Slicing Criterion where ‘s’ is a program point of
 interest and ‘v’ is a variable used or defined above.
 
+Working on tree implementation.
+
 Types of program slicing
 Depending on the run-time environment, it can be
 • Static slicing
