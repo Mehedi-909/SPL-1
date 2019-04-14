@@ -37,4 +37,6 @@ new
 preparing task
 Another
 
-A lot of thinngs done.
+A lot of things done.
+
+Trying to implement CFG with tree.
