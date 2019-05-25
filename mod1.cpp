@@ -232,14 +232,14 @@ int main(){
 
         char c = '(';
         char c2 = ')';
+        char c3 = '=';
 
-    // Find first occurrence of 'g'
+    // Find first occurrence of '('
         size_t found = str.find(c);
-        //if (found != string::npos)
-            //cout << "First occurrence is " << found << endl;
 
-    // Find next occurrence of 'g'
+
         size_t found2 = str.find(c2,found+1);
+        size_t found3 = str.find(c3);
         //if (found != string::npos)
             //cout << "Next occurrence is " << found2 << endl;
         string r = str.substr(found+1, found2-found-1);
@@ -247,7 +247,7 @@ int main(){
         if(r.compare(variable)==0 || contains(r,var,varCount)==1){
             //cout << "String is: " << r<<endl;
             //cout<<str<<endl;
-            string f=str.substr(0,found);
+            string f=str.substr(found3+1,found-found3-1);
             f=removeSpaces(f);
             function[countFunction]=f;
             cout<<function[countFunction]<<endl;
