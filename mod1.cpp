@@ -233,6 +233,7 @@ int main(){
         char c = '(';
         char c2 = ')';
         char c3 = '=';
+        char c4 = ',';
 
     // Find first occurrence of '('
         size_t found = str.find(c);
@@ -244,14 +245,26 @@ int main(){
             //cout << "Next occurrence is " << found2 << endl;
         string r = str.substr(found+1, found2-found-1);
         r=removeSpaces(r);
-        if(r.compare(variable)==0 || contains(r,var,varCount)==1){
-            //cout << "String is: " << r<<endl;
-            //cout<<str<<endl;
-            string f=str.substr(found3+1,found-found3-1);
-            f=removeSpaces(f);
-            function[countFunction]=f;
-            cout<<function[countFunction]<<endl;
-            countFunction++;
+
+         stringstream separateByComma(r);
+
+        string separatedVariables[10];
+        string sp;
+        int l=0;
+        while (getline(separateByComma,sp, ',')){
+            separatedVariables[l]=sp;
+            l++;
+        }
+        for(int i=0;i<l;i++){
+            if(separatedVariables[i].compare(variable)==0 || contains(separatedVariables[i],var,varCount)==1){
+
+                string f=str.substr(found3+1,found-found3-1);
+                f=removeSpaces(f);
+                function[countFunction]=f;
+            //cout<<function[countFunction]<<endl;
+                countFunction++;
+            }
+
         }
 
      }
