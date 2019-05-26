@@ -37,6 +37,91 @@ string removeSpaces(string str)
     return str;
 }
 
+string removeEnter(string str)
+{
+    str.erase(remove(str.begin(), str.end(), '\n'), str.end());
+    return str;
+}
+
+struct node
+{
+	node *parent;
+	string data;
+	int degree;
+	node *left, *right;
+
+};
+
+node *root;
+
+void createTree(void)
+{
+	root= NULL;
+}
+
+node* createNode(string input){
+	node *temp;
+	temp = new node[1];
+	temp[0].parent = NULL;
+	temp[0].data = input;
+	temp[0].degree = 0;
+	temp[0].left = NULL;
+	temp[0].right = NULL;
+
+	return temp;
+}
+
+void insertNode(node *newNode){
+
+
+    if(root == NULL)
+	{
+		root = newNode;
+		return;
+	}
+
+	else{
+        node * current = root;
+		bool flag = false;
+
+        while(1){
+            if(current[0].right != NULL)
+				{
+					current = current[0].right;
+				}
+				else
+				{
+					flag = true;
+					break;
+				}
+        }
+
+        if(flag)
+		{
+			current[0].right = newNode;
+			newNode[0].parent = current;
+			newNode[0].parent[0].degree++;
+
+        }
+
+    }
+
+}
+
+void deleteNode(node *anyNode)
+{
+	delete [] anyNode;
+}
+
+void printData(node *current)
+{
+	if(current != NULL)
+	{
+		cout << current[0].data << endl;
+		printData(current[0].right);
+	}
+}
+
 int main(){
 
     char inputFile[15],outputFile[15];
@@ -270,15 +355,30 @@ int main(){
      }
 
 
+     //printing into output file
+
+
     rewind(fp);
     FILE *fp2=fopen(outputFile,"w");
     int r=0;
      while(fscanf ( fp, "%c", getLine ) != EOF ){
             //cout<<" testing : "<< getLine[0]<<endl;
             if(getLine[0] == '#'){
+
                 fprintf(fp2,"%c",'#');
                 char remaining[50];
+
                 fgets(remaining, sizeof remaining, fp);
+
+                string temp1=getLine;
+                string temp2=remaining;
+                string storeInTree=temp1+temp2;
+                storeInTree=removeEnter(storeInTree);
+
+                node *newNode = createNode(storeInTree);
+                insertNode(newNode);
+                deleteNode(newNode);
+                //cout<<"This is stored : "<<storeInTree<<endl;
                 fputs(remaining,fp2);
 
             }
@@ -298,22 +398,40 @@ int main(){
                 for(int j=0;j<strlen(getLine);j++){
                     fprintf(fp2,"%c",getLine[j]);
                 }
+
+                string storeInTree=getLine;
+                storeInTree=removeEnter(storeInTree);
+
+                node *newNode = createNode(storeInTree);
+                insertNode(newNode);
+                deleteNode(newNode);
+
+
                 while(countCurlyBraceInFunction>0){
-                fgets ( getLine, sizeof getLine, fp );
-                for(int j=0;j<strlen(getLine);j++){
+                    fgets ( getLine, sizeof getLine, fp );
+
+
+                    storeInTree=getLine;
+                    storeInTree=removeEnter(storeInTree);
+
+                    node *newNode = createNode(storeInTree);
+                    insertNode(newNode);
+                    deleteNode(newNode);
+
+                    for(int j=0;j<strlen(getLine);j++){
                     //printf("%c",getLine[j]);
 
-                    fprintf(fp2,"%c",getLine[j]);
-                    if(getLine[j]=='{'){
-                        countCurlyBraceInFunction++;
-                    }
-                    else if(getLine[j]=='}'){
-                        countCurlyBraceInFunction--;
+                        fprintf(fp2,"%c",getLine[j]);
+                        if(getLine[j]=='{'){
+                            countCurlyBraceInFunction++;
+                        }
+                        else if(getLine[j]=='}'){
+                            countCurlyBraceInFunction--;
 
-                    }
+                        }
                     //if(countCurlyBraceInFunction==0) break;
 
-                }
+                    }
                 }
             }
             i++;
@@ -337,11 +455,29 @@ int main(){
         int i=0;
          while (ss >> store3[i]){
                 if((store3[i].compare("main(){"))==0 ){
-                     for(int j=0;j<strlen(getLine);j++){
+
+                    string storeInTree=getLine;
+                    storeInTree=removeEnter(storeInTree);
+
+                    node *newNode = createNode(storeInTree);
+                    insertNode(newNode);
+                    deleteNode(newNode);
+
+                    for(int j=0;j<strlen(getLine);j++){
                         fprintf(fp2,"%c",getLine[j]);
                     }
                 }
                 else if( (store3[i].compare("main()"))==0){
+
+                     string storeInTree=getLine;
+                     storeInTree=removeEnter(storeInTree);
+                     storeInTree=storeInTree+"{";
+
+                     node *newNode = createNode(storeInTree);
+                     insertNode(newNode);
+                     deleteNode(newNode);
+
+
                      for(int j=0;j<strlen(getLine);j++){
                         fprintf(fp2,"%c",getLine[j]);
                     }
@@ -355,20 +491,36 @@ int main(){
                 //fgets ( check2,100, fp2 );
                 //cout<<"Check : "<< check<<endl;
                 if((check.compare(check2))!=0){
-                for(int j=0;j<strlen(getLine);j++){
+
+                     string storeInTree=getLine;
+                     storeInTree=removeEnter(storeInTree);
+
+                     node *newNode = createNode(storeInTree);
+                     insertNode(newNode);
+                     deleteNode(newNode);
+
+                     for(int j=0;j<strlen(getLine);j++){
                     //printf("%c",getLine[j]);
-                    fprintf(fp2,"%c",getLine[j]);
-                    check2[j]=getLine[j];
-                    if(getLine[j]=='{'){
-                        countCurlyBrace++;
-                    }
-                }
+                     fprintf(fp2,"%c",getLine[j]);
+                     check2[j]=getLine[j];
+                        if(getLine[j]=='{'){
+                            countCurlyBrace++;
+                        }
+                     }
                 }
 
             }
 
 
             if((store3[i].compare("}"))==0 && countCurlyBrace>0){
+
+                string storeInTree="\t }";
+                //storeInTree=removeEnter(storeInTree);
+
+                node *newNode = createNode(storeInTree);
+                insertNode(newNode);
+                deleteNode(newNode);
+
                 fprintf(fp2,"%c",'\n');
                 fprintf(fp2,"%c %c",'\t','}');
                 fprintf(fp2,"%c",'\n');
@@ -380,6 +532,15 @@ int main(){
     }
 
     }
+
+    string storeInTree="return0;\n }";
+    //storeInTree=removeEnter(storeInTree);
+
+    node *newNode = createNode(storeInTree);
+    insertNode(newNode);
+    deleteNode(newNode);
+    cout<<"printing tree :"<<endl;
+    printData(root);
 
     fprintf(fp2,"%c%s %c \n",'\t',"return 0",';');
     fprintf(fp2,"%c",'}');
