@@ -308,10 +308,10 @@ int main(){
 
     }
 
-    //cout<<"Stored variables are : "<<endl;
+    cout<<"Stored variables are : "<<endl;
 
     for(int k=0;k<(sizeof var/sizeof var[0]);k++){
-        //cout<<var[k]<<endl;
+        cout<<var[k]<<endl;
     }
 
     rewind(fp);
@@ -396,16 +396,38 @@ int main(){
             }
      }
 
+     //string sstd="using namespace std;";
+
+
      // function call
      rewind(fp);
      while(fgets ( getLine, sizeof getLine, fp )){
 
+        string namestd=getLine;
+        char semicolon=';';
+        char u='u';
+
+        size_t found = namestd.find(u);
+        size_t found2 = namestd.find(semicolon);
+
+        if(found != string::npos && found2 != string::npos ){
+            namestd = namestd.substr(found, found2-found+1);
+        }
+
+        //cout<<namestd<<endl;
+        if(namestd.compare("using namespace std;")==0){
+            //cout<<"This is checked : "<<namestd<<endl;
+            node *newNode = createNode(namestd);
+            insertNode(newNode);
+
+        }
+
         string store4[200];
         stringstream ss(getLine);
-        int i=0;
+        int i=0,flag=0;
         while(ss>>store4[i]){
         if(contains(store4[i],function,countFunction)==1){
-                //cout<<store4[i]<<" is entering"<<endl;
+                cout<<store4[i]<<" is entering"<<endl;
                 countCurlyBraceInFunction++;
                 for(int j=0;j<strlen(getLine);j++){
                     //fprintf(fp2,"%c",getLine[j]);
@@ -449,17 +471,22 @@ int main(){
                     }
                 }
             }
+
+            else if((store4[i].compare("main(){") )==0 || (store4[i].compare("main")==0) || (store4[i].compare("main()"))==0 )
+                flag=1;
+
             i++;
         }
+        if(flag==1) break;
      }
 
     //fseek( fp, countToLine, SEEK_SET );
     rewind(fp);
     int count3=0,countCurlyBrace=0;
 
-    char check2[100];
+    char check2[200];
     while(fgets ( getLine, sizeof getLine, fp )){
-            for(int n=0;n<100;n++){
+            for(int n=0;n<200;n++){
                 check2[n]='\0';
             }
 
@@ -469,7 +496,7 @@ int main(){
         stringstream ss(getLine);
         int i=0;
          while (ss >> store3[i]){
-                if((store3[i].compare("main(){"))==0 ){
+                if((store3[i].compare("main(){") )==0 || (store3[i].compare("main")==0) ){
 
                     string storeInTree=getLine;
                     storeInTree=removeEnter(storeInTree);
@@ -483,7 +510,7 @@ int main(){
                         //fprintf(fp2,"%c",getLine[j]);
                     }
                 }
-                else if( (store3[i].compare("main()"))==0){
+                else if( (store3[i].compare("main()"))==0 ){
 
                      string storeInTree=getLine;
                      storeInTree=removeEnter(storeInTree);
@@ -548,14 +575,11 @@ int main(){
 
     }
 
+    /*
     string storeInTree="return 0;\n }";
-    //cout<<storeInTree<<endl;
-    //storeInTree=removeEnter(storeInTree);
-
-    node *newNode = createNode(storeInTree);
-    insertNode(newNode);
-    //deleteNode(newNode);
-
+    node *newNode2 = createNode(storeInTree);
+    insertNode(newNode2);
+    */
     ofstream outF(outputFile);
 
     printData(root,outF);
