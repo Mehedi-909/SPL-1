@@ -297,11 +297,12 @@ int main(){
 
     }
 
-    cout<<"Dependent variables are : "<<endl;
-
+    //cout<<"Dependent variables are : "<<endl;
+    /*
     for(int k=0;k<(sizeof var/sizeof var[0]);k++){
         cout<<var[k]<<endl;
     }
+    */
 
     rewind(fp);
     int countFunction=0;
@@ -343,6 +344,14 @@ int main(){
                 function[countFunction]=f;
             //cout<<function[countFunction]<<endl;
                 countFunction++;
+                if(found3 != string::npos ){
+                    string v=str.substr(0,found3);
+                    v=removeSpaces(v);
+                    var[varCount]=v;
+                    varCount++;
+                }
+
+                //cout<<"stored "<<v<<endl;
             }
 
         }
