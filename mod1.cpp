@@ -5,13 +5,12 @@
 #include<cstring>
 #include <sstream>
 #include<fstream>
-#include <iostream>
 
 using namespace std;
 
     FILE *fp,fp2;
     char buff[100];
-    int countChar[15];
+    int countChar[50];
 
 int countCharacterInLine(int line){
 
@@ -33,20 +32,17 @@ int contains(string s,string* arr,int count){
     return -1;
 }
 
-string removeSpaces(string str)
-{
+string removeSpaces(string str){
     str.erase(remove(str.begin(), str.end(), ' '), str.end());
     return str;
 }
 
-string removeEnter(string str)
-{
+string removeEnter(string str){
     str.erase(remove(str.begin(), str.end(), '\n'), str.end());
     return str;
 }
 
-struct node
-{
+struct node{
 	node *parent;
 	string data;
 	int degree;
@@ -56,8 +52,7 @@ struct node
 
 node *root;
 
-void createTree(void)
-{
+void createTree(void){
 	root = NULL;
 }
 
@@ -111,13 +106,7 @@ void insertNode(node *newNode){
 
 }
 
-void deleteNode(node *anyNode)
-{
-	delete [] anyNode;
-}
-
-void printData(node *current,ofstream &out)
-{
+void printData(node *current,ofstream &out){
 	if(current != NULL)
 	{
 		//cout << current[0].data << endl;
@@ -137,7 +126,7 @@ int main(){
     printf("Enter input filename with extension: \n");
     scanf("%s",inputFile);
 
-    printf("Enter output filename with .cpp extension: \n");
+    printf("Enter output filename with extension: \n");
     scanf("%s",outputFile);
 
     printf("Enter statement number & variable with a space: \n");
@@ -152,7 +141,7 @@ int main(){
         return 0;
      }
 
-    else  printf("File opened succesfully. \n");
+    //else  printf("File opened succesfully. \n");
     int i=1;
 
     int numberOfLine=0;
@@ -166,10 +155,10 @@ int main(){
 
     }
 
-    printf("Total line : %d \n",numberOfLine);
+    //printf("Total line : %d \n",numberOfLine);
     long totalByte=ftell(fp);
-    printf("Total size of file : %ld  byte\n",totalByte);
-    printf(" byte upto line %d : %ld \n",line,countToLine);
+    //printf("Total size of file : %ld  byte\n",totalByte);
+    //printf(" byte upto line %d : %ld \n",line,countToLine);
 
     rewind(fp);
 
@@ -299,7 +288,7 @@ int main(){
                  if( (store2[i].compare(var[j]))==0){
 
                         var[varCount]=store2[0];
-                        cout<<"Stored variable : " << var[varCount]<<endl;
+                        //cout<<"Stored variable : " << var[varCount]<<endl;
                         varCount++;
                     }
                  }
@@ -308,7 +297,7 @@ int main(){
 
     }
 
-    cout<<"Stored variables are : "<<endl;
+    cout<<"Dependent variables are : "<<endl;
 
     for(int k=0;k<(sizeof var/sizeof var[0]);k++){
         cout<<var[k]<<endl;
@@ -360,12 +349,18 @@ int main(){
 
      }
 
+    /*
+     cout<<"Dependent functions are :"<<endl;
+     for(int i=0;i<countFunction;i++){
+        cout<<function[i]<<endl;
+     }
+    */
 
      //printing into output file
 
 
     rewind(fp);
-    //FILE *fp2=fopen(outputFile,"w");
+
     int r=0;
 
     createTree();
@@ -400,7 +395,10 @@ int main(){
 
 
      // function call
+     long byteUptoMain=0;
+     long byteInMain=0;
      rewind(fp);
+
      while(fgets ( getLine, sizeof getLine, fp )){
 
         string namestd=getLine;
@@ -427,12 +425,8 @@ int main(){
         int i=0,flag=0;
         while(ss>>store4[i]){
         if(contains(store4[i],function,countFunction)==1){
-                cout<<store4[i]<<" is entering"<<endl;
+                //cout<<store4[i]<<" is entering"<<endl;
                 countCurlyBraceInFunction++;
-                for(int j=0;j<strlen(getLine);j++){
-                    //fprintf(fp2,"%c",getLine[j]);
-                }
-                //cout<<"Test1"<<endl;
 
                 string storeInTree=getLine;
                 storeInTree=removeEnter(storeInTree);
@@ -456,9 +450,7 @@ int main(){
                     //deleteNode(newNode);
 
                     for(int j=0;j<strlen(getLine);j++){
-                    //printf("%c",getLine[j]);
 
-                        //fprintf(fp2,"%c",getLine[j]);
                         if(getLine[j]=='{'){
                             countCurlyBraceInFunction++;
                         }
@@ -472,19 +464,24 @@ int main(){
                 }
             }
 
-            else if((store4[i].compare("main(){") )==0 || (store4[i].compare("main")==0) || (store4[i].compare("main()"))==0 )
+            else if((store4[i].compare("main(){") )==0 || (store4[i].compare("main")==0) || (store4[i].compare("main()"))==0 ){
                 flag=1;
+                byteUptoMain=ftell(fp);
+
+            }
+
 
             i++;
         }
         if(flag==1) break;
      }
 
-    //fseek( fp, countToLine, SEEK_SET );
+    //fseek( fp, byteUptoMain-byteInMain, SEEK_SET );
     rewind(fp);
     int count3=0,countCurlyBrace=0;
 
     char check2[200];
+    int flagForMain=0;
     while(fgets ( getLine, sizeof getLine, fp )){
             for(int n=0;n<200;n++){
                 check2[n]='\0';
@@ -496,93 +493,141 @@ int main(){
         stringstream ss(getLine);
         int i=0;
          while (ss >> store3[i]){
-                if((store3[i].compare("main(){") )==0 || (store3[i].compare("main")==0) ){
+                if((store3[i].compare("main(){") )==0 || (store3[i].compare("main")==0) || (store3[i].compare("main()"))==0 ){
+                    flagForMain=1;
+                }
+                if(flagForMain==1){
+                    if((store3[i].compare("main(){") )==0 ){
+                        countCurlyBrace++;
+                        string storeInTree=getLine;
+                        storeInTree=removeEnter(storeInTree);
+                        //cout<<storeInTree<<endl;
 
-                    string storeInTree=getLine;
-                    storeInTree=removeEnter(storeInTree);
+                        node *newNode = createNode(storeInTree);
+                        insertNode(newNode);
+                        //deleteNode(newNode);
+
+                    }
+                    else if( (store3[i].compare("main()"))==0 || (store3[i].compare("main")==0)){
+
+                        string storeInTree=getLine;
+                        storeInTree=removeEnter(storeInTree);
+                        storeInTree=storeInTree+"{";
+                        //cout<<storeInTree<<endl;
+
+                        node *newNode = createNode(storeInTree);
+                        insertNode(newNode);
+                        //deleteNode(newNode);
+
+
+                        for(int j=0;j<strlen(getLine);j++){
+                        //fprintf(fp2,"%c",getLine[j]);
+                            if(getLine[j]=='{'){
+                            countCurlyBrace++;
+                            }
+                        }
+                    //fprintf(fp2,"%c \n",'{');
+                    }
+
+
+                    if( store3[i].compare(variable)==0 || contains(store3[i],var,varCount)==1 ){
+
+                        check=getLine;
+                        //fgets ( check2,100, fp2 );
+                        //cout<<"Check : "<< check<<endl;
+                        if((check.compare(check2))!=0){
+
+                            string storeInTree=getLine;
+                            storeInTree=removeEnter(storeInTree);
+                            //cout<<storeInTree<<endl;
+
+                            node *newNode = createNode(storeInTree);
+                            insertNode(newNode);
+                            //deleteNode(newNode);
+
+                            for(int j=0;j<strlen(getLine);j++){
+
+                                check2[j]=getLine[j];
+                                if(getLine[j]=='{'){
+                                countCurlyBrace++;
+                                }
+                            }
+                            }
+
+                        }
+
+                    else if(contains(store3[i],function,countFunction)==1){
+                        check=getLine;
+
+                        if(check.compare(check2)!=0){
+                        char c = '(';
+                        char c2 = ')';
+                        string str=getLine;
+                        size_t found = str.find(c);
+                        size_t found2 = str.find(c2,found+1);
+
+                        string r = str.substr(found+1, found2-found-1);
+                        r=removeSpaces(r);
+
+                        stringstream separateByComma(r);
+
+                        string separatedVariables[10];
+                        string sp;
+                        int l=0;
+                        while (getline(separateByComma,sp, ',')){
+                            separatedVariables[l]=sp;
+                            l++;
+                        }
+                        int flag=0;
+                        for(int i=0;i<l;i++){
+                            if(separatedVariables[i].compare(variable)==0 || contains(separatedVariables[i],var,varCount)==1){
+                                flag=1;
+                                string storeInTree=getLine;
+                                node *newNode = createNode(storeInTree);
+                                insertNode(newNode);
+                            }
+                            if(flag==1){
+                                break;
+                            }
+
+                        }
+
+                        for(int j=0;j<strlen(getLine);j++){
+
+                            check2[j]=getLine[j];
+                            if(getLine[j]=='{'){
+                                countCurlyBrace++;
+                            }
+                        }
+
+                        }
+                }
+
+
+                if((store3[i].compare("}"))==0 && countCurlyBrace>0){
+
+                    string storeInTree="\t }";
                     //cout<<storeInTree<<endl;
+                    storeInTree=removeEnter(storeInTree);
 
                     node *newNode = createNode(storeInTree);
                     insertNode(newNode);
-                    //deleteNode(newNode);
 
-                    for(int j=0;j<strlen(getLine);j++){
-                        //fprintf(fp2,"%c",getLine[j]);
-                    }
-                }
-                else if( (store3[i].compare("main()"))==0 ){
-
-                     string storeInTree=getLine;
-                     storeInTree=removeEnter(storeInTree);
-                     storeInTree=storeInTree+"{";
-                     //cout<<storeInTree<<endl;
-
-                     node *newNode = createNode(storeInTree);
-                     insertNode(newNode);
-                     //deleteNode(newNode);
-
-
-                     for(int j=0;j<strlen(getLine);j++){
-                        //fprintf(fp2,"%c",getLine[j]);
-                    }
-                    //fprintf(fp2,"%c \n",'{');
-                }
-
-
-                if( store3[i].compare(variable)==0 || contains(store3[i],var,varCount)==1 ){
-
-                check=getLine;
-                //fgets ( check2,100, fp2 );
-                //cout<<"Check : "<< check<<endl;
-                if((check.compare(check2))!=0){
-
-                     string storeInTree=getLine;
-                     storeInTree=removeEnter(storeInTree);
-                     //cout<<storeInTree<<endl;
-
-                     node *newNode = createNode(storeInTree);
-                     insertNode(newNode);
-                     //deleteNode(newNode);
-
-                     for(int j=0;j<strlen(getLine);j++){
-                    //printf("%c",getLine[j]);
-                     //fprintf(fp2,"%c",getLine[j]);
-                     check2[j]=getLine[j];
-                        if(getLine[j]=='{'){
-                            countCurlyBrace++;
-                        }
-                     }
+                    countCurlyBrace--;
                 }
 
             }
 
-
-            if((store3[i].compare("}"))==0 && countCurlyBrace>0){
-
-                string storeInTree="\t }";
-                //cout<<storeInTree<<endl;
-                //storeInTree=removeEnter(storeInTree);
-
-                node *newNode = createNode(storeInTree);
-                insertNode(newNode);
-
-                countCurlyBrace--;
-            }
-
-        i++;
+            i++;
 
     }
 
     }
 
-    /*
-    string storeInTree="return 0;\n }";
-    node *newNode2 = createNode(storeInTree);
-    insertNode(newNode2);
-    */
     ofstream outF(outputFile);
 
     printData(root,outF);
+    cout<<"Successful"<<endl;
 
     //fprintf(fp2,"%c%s %c \n",'\t',"return 0",';');
     //fprintf(fp2,"%c",'}');

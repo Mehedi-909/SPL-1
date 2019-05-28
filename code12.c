@@ -8,22 +8,23 @@ int function (int a) {
 }
 
 int main(){
-    int num1 , num2 , sum = 0 , i , j , total = 0;
-    printf("Enter two numbers: \n");
-    scanf("%d %d",& num1 , & num2 );
+    int num1 ;
+    int num2 , sum = 0 , i , j ;
+    int total = 0;
+    scanf("%d",& num1 );
+    scanf("%d",& num2 );
     sum = num1 + num2 ;
     char c[5]="Test";
     printf("Sum is : %d \n", sum );
-    for( i = 0 ; i < 5 ; i ++ ) {
-    printf("%c",c[i]);
-    }
-    printf("\n");
+
     for( j = 1; j <= num1 ; j++) {
         total = total + j ;
     }
-    int test=function( num1 );
+    int test=function( num2 );
+    int test2=function( total );
 
     printf("Number1 is %d: ", num1 );
+    printf("Number2 is %d: ", num2 );
     printf("Total is: %d\n", total );
     return 0;
 }
